@@ -14,4 +14,9 @@ public class LoadNextLevel : MonoBehaviour {
     {
         SceneManager.LoadScene(1);
     }
+
+	private void Awake()
+	{
+        DontDestroyOnLoad(this.gameObject);
+	}
 }
