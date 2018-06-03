@@ -9,6 +9,14 @@ public class Player : MonoBehaviour {
     [Tooltip("In ms^-1")][SerializeField] float speed = 15f;
     [Tooltip("In m")] [SerializeField] float xRange = 3f;
     [Tooltip("In m")] [SerializeField] float yRange = 2f;
+
+    [SerializeField] float positionPitchFactor = -2f;
+    [SerializeField] float controlPitchFactor = -30f;
+    [SerializeField] float positionYawFactor = -10f;
+    [SerializeField] float controlRollFactor = -20f;
+
+    float xThrow, yThrow;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -24,7 +32,7 @@ public class Player : MonoBehaviour {
 
     private void HorizontalMovement()
     {
-        float xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
+        xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
         float xOffsetThisFrame = speed * xThrow * Time.deltaTime;
         float rawNewXPostion = transform.localPosition.x + xOffsetThisFrame;
         float clampedXPos = Mathf.Clamp(rawNewXPostion, -xRange, xRange);
@@ -33,7 +41,7 @@ public class Player : MonoBehaviour {
 
     private void VerticalMovement()
     {
-        float yThrow = CrossPlatformInputManager.GetAxis("Vertical");
+        yThrow = CrossPlatformInputManager.GetAxis("Vertical");
         float yOffsetThisFrame = speed * yThrow * Time.deltaTime;
         float rawNewYPostion = transform.localPosition.y + yOffsetThisFrame;
         float clampedYPos = Mathf.Clamp(rawNewYPostion, -yRange, yRange);
@@ -42,6 +50,13 @@ public class Player : MonoBehaviour {
 
     private void ProcessRotation()
     {
-        transform.localRotation = Quaternion.Euler(0f, 90f, 0f); 
+        float pitchDueToPostion = transform.localPosition.y * positionPitchFactor;
+        float pitchDueToControlThrow = yThrow * controlPitchFactor;
+        float pitch = pitchDueToPostion + pitchDueToControlThrow;
+
+        float yaw = transform.localPosition.x * positionYawFactor;
+
+        float roll = xThrow * controlRollFactor;
+        transform.localRotation = Quaternion.Euler(pitch, yaw, roll); 
     }
 }

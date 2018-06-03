@@ -646,3 +646,6 @@ MonoBehaviour:
   speed: 5
   xRange: 3
   yRange: 2
+  positionPitchFactor: -2
+  controlPitchFactor: -30
+  positionYawFactor: 13
