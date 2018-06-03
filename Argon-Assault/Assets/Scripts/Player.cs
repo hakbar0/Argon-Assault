@@ -17,11 +17,12 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        horizontalMovement();
-        verticalMovement();
+        HorizontalMovement();
+        VerticalMovement();
+        ProcessRotation();
     }
 
-    private void horizontalMovement()
+    private void HorizontalMovement()
     {
         float xThrow = CrossPlatformInputManager.GetAxis("Horizontal");
         float xOffsetThisFrame = speed * xThrow * Time.deltaTime;
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour {
         transform.localPosition = new Vector3(clampedXPos, transform.localPosition.y, transform.localPosition.z);
     }
 
-    private void verticalMovement()
+    private void VerticalMovement()
     {
         float yThrow = CrossPlatformInputManager.GetAxis("Vertical");
         float yOffsetThisFrame = speed * yThrow * Time.deltaTime;
@@ -39,4 +40,8 @@ public class Player : MonoBehaviour {
         transform.localPosition = new Vector3(transform.localPosition.x, clampedYPos, transform.localPosition.z);
     }
 
+    private void ProcessRotation()
+    {
+        transform.localRotation = Quaternion.Euler(0f, 90f, 0f); 
+    }
 }
