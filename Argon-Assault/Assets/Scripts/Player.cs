@@ -59,4 +59,14 @@ public class Player : MonoBehaviour {
         float roll = xThrow * controlRollFactor;
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll); 
     }
+
+	private void OnCollisionEnter(Collision collision)
+	{
+        print("I collided with something");
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+        print("Player triggered with something");	
+	}
 }
