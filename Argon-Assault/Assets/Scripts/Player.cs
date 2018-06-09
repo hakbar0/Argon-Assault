@@ -6,28 +6,32 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour {
 
+    [Header("General")]
     [Tooltip("In ms^-1")][SerializeField] float speed = 15f;
     [Tooltip("In m")] [SerializeField] float xRange = 3f;
     [Tooltip("In m")] [SerializeField] float yRange = 2f;
 
+    [Header("Screen Position Based")]
     [SerializeField] float positionPitchFactor = -2f;
     [SerializeField] float controlPitchFactor = -30f;
+
+    [Header("Control Throw Based")]
     [SerializeField] float positionYawFactor = -10f;
     [SerializeField] float controlRollFactor = -20f;
 
     float xThrow, yThrow;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+    bool isControlsEnabled = true;
+
 	// Update is called once per frame
 	void Update ()
     {
-        HorizontalMovement();
-        VerticalMovement();
-        ProcessRotation();
+        if(isControlsEnabled)
+        {
+			HorizontalMovement();
+			VerticalMovement();
+			ProcessRotation();
+        }
     }
 
     private void HorizontalMovement()
@@ -60,13 +64,7 @@ public class Player : MonoBehaviour {
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll); 
     }
 
-	private void OnCollisionEnter(Collision collision)
-	{
-        print("I collided with something");
-	}
-
-	private void OnTriggerEnter(Collider other)
-	{
-        print("Player triggered with something");	
-	}
+    void OnPlayerDeath(){  // called by string reference from collisionhandler
+        isControlsEnabled = false;
+    }
 }
